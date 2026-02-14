@@ -3,10 +3,19 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
+import Auth from "./pages/Auth";
+import Dashboard from "./pages/Dashboard";
+import DashboardHome from "./pages/DashboardHome";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
+
+const PlaceholderPage = ({ title }: { title: string }) => (
+  <div className="animate-fade-in">
+    <h1 className="text-2xl font-display font-bold text-foreground">{title}</h1>
+    <p className="text-muted-foreground mt-1">This section is coming soon.</p>
+  </div>
+);
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -15,8 +24,18 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Index />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="/auth" element={<Auth />} />
+          <Route path="/" element={<Dashboard />}>
+            <Route index element={<DashboardHome />} />
+            <Route path="power-moves" element={<PlaceholderPage title="Daily Power Moves" />} />
+            <Route path="activities" element={<PlaceholderPage title="Activity Log" />} />
+            <Route path="contacts" element={<PlaceholderPage title="Contacts & Relationships" />} />
+            <Route path="leaderboard" element={<PlaceholderPage title="Leaderboard" />} />
+            <Route path="programs" element={<PlaceholderPage title="Programs" />} />
+            <Route path="policies" element={<PlaceholderPage title="Policies" />} />
+            <Route path="education" element={<PlaceholderPage title="Continuing Education" />} />
+            <Route path="messages" element={<PlaceholderPage title="CEO Messages" />} />
+          </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
