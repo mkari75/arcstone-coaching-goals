@@ -2,6 +2,7 @@ import { useRequireAuth } from "@/hooks/useAuth";
 import { AppSidebar } from "@/components/AppSidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { VoiceNoteButton } from "@/components/coaching/VoiceNoteButton";
+import NotificationCenter from "@/components/notifications/NotificationCenter";
 import { Outlet } from "react-router-dom";
 
 const Dashboard = () => {
@@ -25,6 +26,7 @@ const Dashboard = () => {
           <header className="h-14 border-b border-border flex items-center px-4 gap-3 bg-card">
             <SidebarTrigger />
             <div className="flex-1" />
+            <NotificationCenter />
             <span className="text-sm text-muted-foreground">
               {session.user.email}
             </span>
