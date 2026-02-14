@@ -360,6 +360,54 @@ export type Database = {
         }
         Relationships: []
       }
+      coaching_notes: {
+        Row: {
+          action_items: Json | null
+          coach_id: string
+          content: string
+          created_at: string | null
+          follow_up_completed: boolean | null
+          follow_up_date: string | null
+          id: string
+          is_private: boolean | null
+          loan_officer_id: string
+          note_type: string
+          requires_follow_up: boolean | null
+          subject: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          action_items?: Json | null
+          coach_id: string
+          content: string
+          created_at?: string | null
+          follow_up_completed?: boolean | null
+          follow_up_date?: string | null
+          id?: string
+          is_private?: boolean | null
+          loan_officer_id: string
+          note_type: string
+          requires_follow_up?: boolean | null
+          subject?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          action_items?: Json | null
+          coach_id?: string
+          content?: string
+          created_at?: string | null
+          follow_up_completed?: boolean | null
+          follow_up_date?: string | null
+          id?: string
+          is_private?: boolean | null
+          loan_officer_id?: string
+          note_type?: string
+          requires_follow_up?: boolean | null
+          subject?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       contacts: {
         Row: {
           company: string | null
@@ -1325,6 +1373,51 @@ export type Database = {
           },
         ]
       }
+      team_alerts: {
+        Row: {
+          alert_type: string
+          description: string | null
+          id: string
+          loan_officer_id: string
+          metadata: Json | null
+          resolution_note: string | null
+          resolved: boolean | null
+          resolved_at: string | null
+          resolved_by: string | null
+          severity: string
+          title: string
+          triggered_at: string | null
+        }
+        Insert: {
+          alert_type: string
+          description?: string | null
+          id?: string
+          loan_officer_id: string
+          metadata?: Json | null
+          resolution_note?: string | null
+          resolved?: boolean | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity: string
+          title: string
+          triggered_at?: string | null
+        }
+        Update: {
+          alert_type?: string
+          description?: string | null
+          id?: string
+          loan_officer_id?: string
+          metadata?: Json | null
+          resolution_note?: string | null
+          resolved?: boolean | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity?: string
+          title?: string
+          triggered_at?: string | null
+        }
+        Relationships: []
+      }
       user_achievements: {
         Row: {
           achievement_id: string
@@ -1399,6 +1492,7 @@ export type Database = {
         Returns: number
       }
       check_license_expiry: { Args: never; Returns: undefined }
+      generate_team_alerts: { Args: never; Returns: undefined }
       get_period_dates: {
         Args: { p_period_type: string }
         Returns: {
