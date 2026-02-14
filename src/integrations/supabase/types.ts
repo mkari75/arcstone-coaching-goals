@@ -1493,6 +1493,18 @@ export type Database = {
       }
       check_license_expiry: { Args: never; Returns: undefined }
       generate_team_alerts: { Args: never; Returns: undefined }
+      get_pending_acknowledgments: {
+        Args: { p_user_id: string }
+        Returns: {
+          days_overdue: number
+          effective_date: string
+          item_category: string
+          item_id: string
+          item_title: string
+          item_type: string
+          requires_quiz: boolean
+        }[]
+      }
       get_period_dates: {
         Args: { p_period_type: string }
         Returns: {
