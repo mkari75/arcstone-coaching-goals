@@ -805,6 +805,74 @@ export type Database = {
         }
         Relationships: []
       }
+      manager_escalations: {
+        Row: {
+          created_at: string | null
+          description: string
+          escalated_at: string | null
+          escalation_type: string
+          id: string
+          loan_officer_id: string
+          manager_id: string
+          metadata: Json | null
+          notification_id: string | null
+          related_id: string | null
+          related_type: string | null
+          resolution_notes: string | null
+          resolved_at: string | null
+          resolved_by: string | null
+          severity: string
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description: string
+          escalated_at?: string | null
+          escalation_type: string
+          id?: string
+          loan_officer_id: string
+          manager_id: string
+          metadata?: Json | null
+          notification_id?: string | null
+          related_id?: string | null
+          related_type?: string | null
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity?: string
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string
+          escalated_at?: string | null
+          escalation_type?: string
+          id?: string
+          loan_officer_id?: string
+          manager_id?: string
+          metadata?: Json | null
+          notification_id?: string | null
+          related_id?: string | null
+          related_type?: string | null
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity?: string
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "manager_escalations_notification_id_fkey"
+            columns: ["notification_id"]
+            isOneToOne: false
+            referencedRelation: "notifications"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       message_views: {
         Row: {
           comment_text: string | null
@@ -863,6 +931,153 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      notification_preferences: {
+        Row: {
+          achievement_notifications: boolean | null
+          acknowledgment_reminders: boolean | null
+          created_at: string | null
+          digest_enabled: boolean | null
+          digest_time: string | null
+          email_enabled: boolean | null
+          id: string
+          in_app_enabled: boolean | null
+          manager_escalations: boolean | null
+          pip_alerts: boolean | null
+          policy_updates: boolean | null
+          program_updates: boolean | null
+          push_enabled: boolean | null
+          quiet_hours_enabled: boolean | null
+          quiet_hours_end: string | null
+          quiet_hours_start: string | null
+          reminder_frequency: string | null
+          training_reminders: boolean | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          achievement_notifications?: boolean | null
+          acknowledgment_reminders?: boolean | null
+          created_at?: string | null
+          digest_enabled?: boolean | null
+          digest_time?: string | null
+          email_enabled?: boolean | null
+          id?: string
+          in_app_enabled?: boolean | null
+          manager_escalations?: boolean | null
+          pip_alerts?: boolean | null
+          policy_updates?: boolean | null
+          program_updates?: boolean | null
+          push_enabled?: boolean | null
+          quiet_hours_enabled?: boolean | null
+          quiet_hours_end?: string | null
+          quiet_hours_start?: string | null
+          reminder_frequency?: string | null
+          training_reminders?: boolean | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          achievement_notifications?: boolean | null
+          acknowledgment_reminders?: boolean | null
+          created_at?: string | null
+          digest_enabled?: boolean | null
+          digest_time?: string | null
+          email_enabled?: boolean | null
+          id?: string
+          in_app_enabled?: boolean | null
+          manager_escalations?: boolean | null
+          pip_alerts?: boolean | null
+          policy_updates?: boolean | null
+          program_updates?: boolean | null
+          push_enabled?: boolean | null
+          quiet_hours_enabled?: boolean | null
+          quiet_hours_end?: string | null
+          quiet_hours_start?: string | null
+          reminder_frequency?: string | null
+          training_reminders?: boolean | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      notifications: {
+        Row: {
+          action_label: string | null
+          action_url: string | null
+          created_at: string | null
+          delivered_email: boolean | null
+          delivered_in_app: boolean | null
+          delivered_push: boolean | null
+          dismissed_at: string | null
+          email_delivered_at: string | null
+          email_error: string | null
+          email_opened_at: string | null
+          email_sent_at: string | null
+          id: string
+          message: string
+          metadata: Json | null
+          priority: string
+          read_at: string | null
+          related_id: string | null
+          related_type: string | null
+          sent_at: string | null
+          title: string
+          type: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          action_label?: string | null
+          action_url?: string | null
+          created_at?: string | null
+          delivered_email?: boolean | null
+          delivered_in_app?: boolean | null
+          delivered_push?: boolean | null
+          dismissed_at?: string | null
+          email_delivered_at?: string | null
+          email_error?: string | null
+          email_opened_at?: string | null
+          email_sent_at?: string | null
+          id?: string
+          message: string
+          metadata?: Json | null
+          priority?: string
+          read_at?: string | null
+          related_id?: string | null
+          related_type?: string | null
+          sent_at?: string | null
+          title: string
+          type: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          action_label?: string | null
+          action_url?: string | null
+          created_at?: string | null
+          delivered_email?: boolean | null
+          delivered_in_app?: boolean | null
+          delivered_push?: boolean | null
+          dismissed_at?: string | null
+          email_delivered_at?: string | null
+          email_error?: string | null
+          email_opened_at?: string | null
+          email_sent_at?: string | null
+          id?: string
+          message?: string
+          metadata?: Json | null
+          priority?: string
+          read_at?: string | null
+          related_id?: string | null
+          related_type?: string | null
+          sent_at?: string | null
+          title?: string
+          type?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
       }
       pip_records: {
         Row: {
@@ -1373,6 +1588,59 @@ export type Database = {
           },
         ]
       }
+      reminder_schedules: {
+        Row: {
+          created_at: string | null
+          error_message: string | null
+          id: string
+          notification_id: string | null
+          related_id: string
+          related_type: string
+          reminder_type: string
+          scheduled_for: string
+          sent_at: string | null
+          status: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          error_message?: string | null
+          id?: string
+          notification_id?: string | null
+          related_id: string
+          related_type: string
+          reminder_type: string
+          scheduled_for: string
+          sent_at?: string | null
+          status?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          error_message?: string | null
+          id?: string
+          notification_id?: string | null
+          related_id?: string
+          related_type?: string
+          reminder_type?: string
+          scheduled_for?: string
+          sent_at?: string | null
+          status?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reminder_schedules_notification_id_fkey"
+            columns: ["notification_id"]
+            isOneToOne: false
+            referencedRelation: "notifications"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       team_alerts: {
         Row: {
           alert_type: string
@@ -1492,6 +1760,21 @@ export type Database = {
         Returns: number
       }
       check_license_expiry: { Args: never; Returns: undefined }
+      create_notification: {
+        Args: {
+          p_action_label?: string
+          p_action_url?: string
+          p_message: string
+          p_metadata?: Json
+          p_priority?: string
+          p_related_id?: string
+          p_related_type?: string
+          p_title: string
+          p_type: string
+          p_user_id: string
+        }
+        Returns: string
+      }
       generate_team_alerts: { Args: never; Returns: undefined }
       get_pending_acknowledgments: {
         Args: { p_user_id: string }
@@ -1512,12 +1795,17 @@ export type Database = {
           start_date: string
         }[]
       }
+      get_unread_count: { Args: { p_user_id: string }; Returns: number }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
           _user_id: string
         }
         Returns: boolean
+      }
+      mark_notification_read: {
+        Args: { p_notification_id: string }
+        Returns: undefined
       }
       refresh_all_leaderboards: { Args: never; Returns: undefined }
       update_contact_health: {
