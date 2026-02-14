@@ -35,6 +35,7 @@ const navItems = [
   { title: "Policies", icon: Shield, path: "/policies" },
   { title: "Education", icon: GraduationCap, path: "/education" },
   { title: "Messages", icon: MessageSquare, path: "/messages" },
+  { title: "Manager", icon: Shield, path: "/manager" },
 ];
 
 export function AppSidebar() {

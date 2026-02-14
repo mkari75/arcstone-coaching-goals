@@ -7,6 +7,7 @@ import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
 import DashboardHome from "./pages/DashboardHome";
 import LeaderboardPage from "./pages/LeaderboardPage";
+import ManagerDashboard from "./pages/ManagerDashboard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -36,6 +37,7 @@ const App = () => (
             <Route path="policies" element={<PlaceholderPage title="Policies" />} />
             <Route path="education" element={<PlaceholderPage title="Continuing Education" />} />
             <Route path="messages" element={<PlaceholderPage title="CEO Messages" />} />
+            <Route path="manager" element={<ManagerDashboard />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
