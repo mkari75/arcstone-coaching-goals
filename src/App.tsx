@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
 import DashboardHome from "./pages/DashboardHome";
+import LeaderboardPage from "./pages/LeaderboardPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -30,7 +31,7 @@ const App = () => (
             <Route path="power-moves" element={<PlaceholderPage title="Daily Power Moves" />} />
             <Route path="activities" element={<PlaceholderPage title="Activity Log" />} />
             <Route path="contacts" element={<PlaceholderPage title="Contacts & Relationships" />} />
-            <Route path="leaderboard" element={<PlaceholderPage title="Leaderboard" />} />
+            <Route path="leaderboard" element={<LeaderboardPage />} />
             <Route path="programs" element={<PlaceholderPage title="Programs" />} />
             <Route path="policies" element={<PlaceholderPage title="Policies" />} />
             <Route path="education" element={<PlaceholderPage title="Continuing Education" />} />

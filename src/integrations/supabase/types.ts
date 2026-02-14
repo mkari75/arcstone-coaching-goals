@@ -14,6 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      achievements: {
+        Row: {
+          category: string
+          color: string | null
+          created_at: string | null
+          criteria: Json
+          description: string | null
+          icon_name: string | null
+          id: string
+          name: string
+          points_bonus: number | null
+        }
+        Insert: {
+          category: string
+          color?: string | null
+          created_at?: string | null
+          criteria: Json
+          description?: string | null
+          icon_name?: string | null
+          id?: string
+          name: string
+          points_bonus?: number | null
+        }
+        Update: {
+          category?: string
+          color?: string | null
+          created_at?: string | null
+          criteria?: Json
+          description?: string | null
+          icon_name?: string | null
+          id?: string
+          name?: string
+          points_bonus?: number | null
+        }
+        Relationships: []
+      }
       activities: {
         Row: {
           activity_category: string
@@ -134,6 +170,117 @@ export type Database = {
             columns: ["module_id"]
             isOneToOne: false
             referencedRelation: "continuing_education_modules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      celebration_comments: {
+        Row: {
+          celebration_id: string
+          comment: string
+          created_at: string | null
+          id: string
+          user_id: string
+        }
+        Insert: {
+          celebration_id: string
+          comment: string
+          created_at?: string | null
+          id?: string
+          user_id: string
+        }
+        Update: {
+          celebration_id?: string
+          comment?: string
+          created_at?: string | null
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "celebration_comments_celebration_id_fkey"
+            columns: ["celebration_id"]
+            isOneToOne: false
+            referencedRelation: "celebration_feed"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      celebration_feed: {
+        Row: {
+          achievement_id: string | null
+          celebration_type: string
+          comment_count: number | null
+          created_at: string | null
+          description: string | null
+          id: string
+          is_public: boolean | null
+          like_count: number | null
+          metadata: Json | null
+          title: string
+          user_id: string
+        }
+        Insert: {
+          achievement_id?: string | null
+          celebration_type: string
+          comment_count?: number | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_public?: boolean | null
+          like_count?: number | null
+          metadata?: Json | null
+          title: string
+          user_id: string
+        }
+        Update: {
+          achievement_id?: string | null
+          celebration_type?: string
+          comment_count?: number | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_public?: boolean | null
+          like_count?: number | null
+          metadata?: Json | null
+          title?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "celebration_feed_achievement_id_fkey"
+            columns: ["achievement_id"]
+            isOneToOne: false
+            referencedRelation: "achievements"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      celebration_likes: {
+        Row: {
+          celebration_id: string
+          created_at: string | null
+          id: string
+          user_id: string
+        }
+        Insert: {
+          celebration_id: string
+          created_at?: string | null
+          id?: string
+          user_id: string
+        }
+        Update: {
+          celebration_id?: string
+          created_at?: string | null
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "celebration_likes_celebration_id_fkey"
+            columns: ["celebration_id"]
+            isOneToOne: false
+            referencedRelation: "celebration_feed"
             referencedColumns: ["id"]
           },
         ]
@@ -1178,6 +1325,44 @@ export type Database = {
           },
         ]
       }
+      user_achievements: {
+        Row: {
+          achievement_id: string
+          celebrated: boolean | null
+          celebrated_at: string | null
+          earned_at: string | null
+          id: string
+          progress_value: number | null
+          user_id: string
+        }
+        Insert: {
+          achievement_id: string
+          celebrated?: boolean | null
+          celebrated_at?: string | null
+          earned_at?: string | null
+          id?: string
+          progress_value?: number | null
+          user_id: string
+        }
+        Update: {
+          achievement_id?: string
+          celebrated?: boolean | null
+          celebrated_at?: string | null
+          earned_at?: string | null
+          id?: string
+          progress_value?: number | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_achievements_achievement_id_fkey"
+            columns: ["achievement_id"]
+            isOneToOne: false
+            referencedRelation: "achievements"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           id: string
@@ -1201,11 +1386,26 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      calculate_leaderboard: {
+        Args: {
+          p_period_end: string
+          p_period_start: string
+          p_period_type: string
+        }
+        Returns: undefined
+      }
       calculate_momentum_score: {
         Args: { p_days?: number; p_user_id: string }
         Returns: number
       }
       check_license_expiry: { Args: never; Returns: undefined }
+      get_period_dates: {
+        Args: { p_period_type: string }
+        Returns: {
+          end_date: string
+          start_date: string
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -1213,6 +1413,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      refresh_all_leaderboards: { Args: never; Returns: undefined }
       update_contact_health: {
         Args: { p_contact_id: string }
         Returns: undefined
