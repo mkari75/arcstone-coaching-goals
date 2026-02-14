@@ -1,6 +1,7 @@
 import { useRequireAuth } from "@/hooks/useAuth";
 import { AppSidebar } from "@/components/AppSidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { VoiceNoteButton } from "@/components/coaching/VoiceNoteButton";
 import { Outlet } from "react-router-dom";
 
 const Dashboard = () => {
@@ -31,6 +32,7 @@ const Dashboard = () => {
           <div className="flex-1 p-6">
             <Outlet />
           </div>
+          <VoiceNoteButton />
         </main>
       </div>
     </SidebarProvider>
