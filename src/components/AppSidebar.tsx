@@ -32,7 +32,7 @@ const navItems = [
   { title: "Contacts", icon: Users, path: "/contacts" },
   { title: "Leaderboard", icon: Trophy, path: "/leaderboard" },
   { title: "Programs", icon: BookOpen, path: "/programs" },
-  { title: "Policies", icon: Shield, path: "/policies" },
+  { title: "Policies", icon: Shield, path: "/policies-page" },
   { title: "Education", icon: GraduationCap, path: "/education" },
   { title: "Messages", icon: MessageSquare, path: "/messages" },
   { title: "Manager", icon: Shield, path: "/manager" },

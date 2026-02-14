@@ -8,6 +8,9 @@ import Dashboard from "./pages/Dashboard";
 import DashboardHome from "./pages/DashboardHome";
 import LeaderboardPage from "./pages/LeaderboardPage";
 import ManagerDashboard from "./pages/ManagerDashboard";
+import ProgramsLibrary from "./pages/ProgramsLibrary";
+import ProgramViewer from "./pages/ProgramViewer";
+import PolicyViewer from "./pages/PolicyViewer";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -33,9 +36,12 @@ const App = () => (
             <Route path="activities" element={<PlaceholderPage title="Activity Log" />} />
             <Route path="contacts" element={<PlaceholderPage title="Contacts & Relationships" />} />
             <Route path="leaderboard" element={<LeaderboardPage />} />
-            <Route path="programs" element={<PlaceholderPage title="Programs" />} />
-            <Route path="policies" element={<PlaceholderPage title="Policies" />} />
+            <Route path="programs" element={<ProgramsLibrary />} />
+            <Route path="programs/:id" element={<ProgramViewer />} />
+            <Route path="policies-page" element={<ProgramsLibrary />} />
+            <Route path="policies/:id" element={<PolicyViewer />} />
             <Route path="education" element={<PlaceholderPage title="Continuing Education" />} />
+            <Route path="messages" element={<PlaceholderPage title="CEO Messages" />} />
             <Route path="messages" element={<PlaceholderPage title="CEO Messages" />} />
             <Route path="manager" element={<ManagerDashboard />} />
           </Route>
