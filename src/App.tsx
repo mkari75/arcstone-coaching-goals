@@ -6,6 +6,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
 import DashboardHome from "./pages/DashboardHome";
+import ActivityLog from "./pages/ActivityLog";
+import ContactsPage from "./pages/ContactsPage";
 import LeaderboardPage from "./pages/LeaderboardPage";
 import ManagerDashboard from "./pages/ManagerDashboard";
 import ProgramsLibrary from "./pages/ProgramsLibrary";
@@ -34,8 +36,8 @@ const App = () => (
           <Route path="/" element={<Dashboard />}>
             <Route index element={<DashboardHome />} />
             <Route path="power-moves" element={<PlaceholderPage title="Daily Power Moves" />} />
-            <Route path="activities" element={<PlaceholderPage title="Activity Log" />} />
-            <Route path="contacts" element={<PlaceholderPage title="Contacts & Relationships" />} />
+            <Route path="activities" element={<ActivityLog />} />
+            <Route path="contacts" element={<ContactsPage />} />
             <Route path="leaderboard" element={<LeaderboardPage />} />
             <Route path="programs" element={<ProgramsLibrary />} />
             <Route path="programs/:id" element={<ProgramViewer />} />
