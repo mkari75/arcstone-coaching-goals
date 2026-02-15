@@ -8,6 +8,7 @@ import { QuickStats } from '@/components/coaching/QuickStats';
 import { MorningKickoff } from '@/components/coaching/MorningKickoff';
 import { EveningDebrief } from '@/components/coaching/EveningDebrief';
 import { Skeleton } from '@/components/ui/skeleton';
+import { AICoachWidget } from '@/components/ai/AICoachWidget';
 import { Button } from '@/components/ui/button';
 import { Sun, Moon } from 'lucide-react';
 import { format, subDays, startOfWeek, startOfMonth } from 'date-fns';
@@ -260,6 +261,8 @@ const DashboardHome = () => {
           pointsChange={pointsChange}
         />
       )}
+
+      <AICoachWidget />
 
       <MorningKickoff
         isOpen={showMorningKickoff}

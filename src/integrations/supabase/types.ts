@@ -112,6 +112,188 @@ export type Database = {
           },
         ]
       }
+      activity_summaries: {
+        Row: {
+          created_at: string | null
+          highlights: string[] | null
+          id: string
+          key_metrics: Json | null
+          period_end: string
+          period_start: string
+          period_type: string
+          recommendations: string[] | null
+          summary_text: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          highlights?: string[] | null
+          id?: string
+          key_metrics?: Json | null
+          period_end: string
+          period_start: string
+          period_type: string
+          recommendations?: string[] | null
+          summary_text: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          highlights?: string[] | null
+          id?: string
+          key_metrics?: Json | null
+          period_end?: string
+          period_start?: string
+          period_type?: string
+          recommendations?: string[] | null
+          summary_text?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      ai_analysis_cache: {
+        Row: {
+          analysis_type: string
+          cache_key: string
+          created_at: string | null
+          expires_at: string
+          id: string
+          result: Json
+          user_id: string
+        }
+        Insert: {
+          analysis_type: string
+          cache_key: string
+          created_at?: string | null
+          expires_at: string
+          id?: string
+          result: Json
+          user_id: string
+        }
+        Update: {
+          analysis_type?: string
+          cache_key?: string
+          created_at?: string | null
+          expires_at?: string
+          id?: string
+          result?: Json
+          user_id?: string
+        }
+        Relationships: []
+      }
+      ai_coaching_insights: {
+        Row: {
+          acknowledged_at: string | null
+          category: string | null
+          created_at: string | null
+          data_points: Json | null
+          description: string
+          expires_at: string | null
+          id: string
+          insight_type: string
+          is_acknowledged: boolean | null
+          priority: string
+          recommendations: string[] | null
+          title: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          acknowledged_at?: string | null
+          category?: string | null
+          created_at?: string | null
+          data_points?: Json | null
+          description: string
+          expires_at?: string | null
+          id?: string
+          insight_type: string
+          is_acknowledged?: boolean | null
+          priority: string
+          recommendations?: string[] | null
+          title: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          acknowledged_at?: string | null
+          category?: string | null
+          created_at?: string | null
+          data_points?: Json | null
+          description?: string
+          expires_at?: string | null
+          id?: string
+          insight_type?: string
+          is_acknowledged?: boolean | null
+          priority?: string
+          recommendations?: string[] | null
+          title?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      ai_recommendations: {
+        Row: {
+          completed_at: string | null
+          confidence_score: number | null
+          contact_id: string | null
+          created_at: string | null
+          description: string
+          dismissed_at: string | null
+          id: string
+          is_completed: boolean | null
+          is_dismissed: boolean | null
+          reasoning: string | null
+          recommendation_type: string
+          suggested_action: Json | null
+          title: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          confidence_score?: number | null
+          contact_id?: string | null
+          created_at?: string | null
+          description: string
+          dismissed_at?: string | null
+          id?: string
+          is_completed?: boolean | null
+          is_dismissed?: boolean | null
+          reasoning?: string | null
+          recommendation_type: string
+          suggested_action?: Json | null
+          title: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          confidence_score?: number | null
+          contact_id?: string | null
+          created_at?: string | null
+          description?: string
+          dismissed_at?: string | null
+          id?: string
+          is_completed?: boolean | null
+          is_dismissed?: boolean | null
+          reasoning?: string | null
+          recommendation_type?: string
+          suggested_action?: Json | null
+          title?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_recommendations_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "contacts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       api_keys: {
         Row: {
           created_at: string | null
@@ -625,6 +807,7 @@ export type Database = {
       }
       contacts: {
         Row: {
+          churn_risk_score: number | null
           company: string | null
           contact_type: string
           created_at: string | null
@@ -637,8 +820,13 @@ export type Database = {
           last_contact_type: string | null
           loans_closed: number | null
           name: string
+          next_best_action: string | null
           notes: string | null
           phone: string | null
+          predicted_close_probability: number | null
+          prediction_last_updated: string | null
+          preferred_communication_channel: string | null
+          recommended_touch_frequency: number | null
           referrals_received: number | null
           tags: string[] | null
           title: string | null
@@ -648,6 +836,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          churn_risk_score?: number | null
           company?: string | null
           contact_type: string
           created_at?: string | null
@@ -660,8 +849,13 @@ export type Database = {
           last_contact_type?: string | null
           loans_closed?: number | null
           name: string
+          next_best_action?: string | null
           notes?: string | null
           phone?: string | null
+          predicted_close_probability?: number | null
+          prediction_last_updated?: string | null
+          preferred_communication_channel?: string | null
+          recommended_touch_frequency?: number | null
           referrals_received?: number | null
           tags?: string[] | null
           title?: string | null
@@ -671,6 +865,7 @@ export type Database = {
           user_id: string
         }
         Update: {
+          churn_risk_score?: number | null
           company?: string | null
           contact_type?: string
           created_at?: string | null
@@ -683,8 +878,13 @@ export type Database = {
           last_contact_type?: string | null
           loans_closed?: number | null
           name?: string
+          next_best_action?: string | null
           notes?: string | null
           phone?: string | null
+          predicted_close_probability?: number | null
+          prediction_last_updated?: string | null
+          preferred_communication_channel?: string | null
+          recommended_touch_frequency?: number | null
           referrals_received?: number | null
           tags?: string[] | null
           title?: string | null
@@ -1102,6 +1302,51 @@ export type Database = {
           refresh_token?: string | null
           sync_frequency_minutes?: number | null
           token_expires_at?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      email_sequences: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          id: string
+          is_active: boolean | null
+          name: string
+          total_completed: number | null
+          total_enrolled: number | null
+          total_steps: number | null
+          trigger_conditions: Json | null
+          trigger_type: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          total_completed?: number | null
+          total_enrolled?: number | null
+          total_steps?: number | null
+          trigger_conditions?: Json | null
+          trigger_type: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          total_completed?: number | null
+          total_enrolled?: number | null
+          total_steps?: number | null
+          trigger_conditions?: Json | null
+          trigger_type?: string
           updated_at?: string | null
           user_id?: string
         }
@@ -2250,6 +2495,246 @@ export type Database = {
         }
         Relationships: []
       }
+      sequence_email_sends: {
+        Row: {
+          created_at: string | null
+          email_activity_id: string | null
+          enrollment_id: string
+          error_message: string | null
+          id: string
+          scheduled_at: string
+          sent_at: string | null
+          status: string
+          step_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          email_activity_id?: string | null
+          enrollment_id: string
+          error_message?: string | null
+          id?: string
+          scheduled_at: string
+          sent_at?: string | null
+          status?: string
+          step_id: string
+        }
+        Update: {
+          created_at?: string | null
+          email_activity_id?: string | null
+          enrollment_id?: string
+          error_message?: string | null
+          id?: string
+          scheduled_at?: string
+          sent_at?: string | null
+          status?: string
+          step_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sequence_email_sends_email_activity_id_fkey"
+            columns: ["email_activity_id"]
+            isOneToOne: false
+            referencedRelation: "email_activities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sequence_email_sends_enrollment_id_fkey"
+            columns: ["enrollment_id"]
+            isOneToOne: false
+            referencedRelation: "sequence_enrollments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sequence_email_sends_step_id_fkey"
+            columns: ["step_id"]
+            isOneToOne: false
+            referencedRelation: "sequence_steps"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sequence_enrollments: {
+        Row: {
+          cancelled_at: string | null
+          completed_at: string | null
+          contact_id: string
+          created_at: string | null
+          current_step: number | null
+          enrolled_at: string | null
+          id: string
+          paused_at: string | null
+          sequence_id: string
+          status: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          cancelled_at?: string | null
+          completed_at?: string | null
+          contact_id: string
+          created_at?: string | null
+          current_step?: number | null
+          enrolled_at?: string | null
+          id?: string
+          paused_at?: string | null
+          sequence_id: string
+          status?: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          cancelled_at?: string | null
+          completed_at?: string | null
+          contact_id?: string
+          created_at?: string | null
+          current_step?: number | null
+          enrolled_at?: string | null
+          id?: string
+          paused_at?: string | null
+          sequence_id?: string
+          status?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sequence_enrollments_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "contacts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sequence_enrollments_sequence_id_fkey"
+            columns: ["sequence_id"]
+            isOneToOne: false
+            referencedRelation: "email_sequences"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sequence_steps: {
+        Row: {
+          body: string
+          created_at: string | null
+          delay_days: number
+          delay_hours: number | null
+          id: string
+          name: string
+          send_time: string | null
+          sequence_id: string
+          step_number: number
+          subject: string
+          template_id: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          body: string
+          created_at?: string | null
+          delay_days?: number
+          delay_hours?: number | null
+          id?: string
+          name: string
+          send_time?: string | null
+          sequence_id: string
+          step_number: number
+          subject: string
+          template_id?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          body?: string
+          created_at?: string | null
+          delay_days?: number
+          delay_hours?: number | null
+          id?: string
+          name?: string
+          send_time?: string | null
+          sequence_id?: string
+          step_number?: number
+          subject?: string
+          template_id?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sequence_steps_sequence_id_fkey"
+            columns: ["sequence_id"]
+            isOneToOne: false
+            referencedRelation: "email_sequences"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sequence_steps_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "email_templates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      smart_reminders: {
+        Row: {
+          completed_at: string | null
+          contact_id: string | null
+          created_at: string | null
+          created_by: string | null
+          description: string | null
+          id: string
+          is_completed: boolean | null
+          is_snoozed: boolean | null
+          priority: string | null
+          remind_at: string
+          reminder_type: string
+          snoozed_until: string | null
+          title: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          contact_id?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          is_completed?: boolean | null
+          is_snoozed?: boolean | null
+          priority?: string | null
+          remind_at: string
+          reminder_type: string
+          snoozed_until?: string | null
+          title: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          contact_id?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          is_completed?: boolean | null
+          is_snoozed?: boolean | null
+          priority?: string | null
+          remind_at?: string
+          reminder_type?: string
+          snoozed_until?: string | null
+          title?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "smart_reminders_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "contacts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       sync_queue: {
         Row: {
           attempts: number | null
@@ -2481,6 +2966,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      calculate_engagement_score: {
+        Args: { p_contact_id: string }
+        Returns: number
+      }
       calculate_leaderboard: {
         Args: {
           p_period_end: string
@@ -2507,6 +2996,10 @@ export type Database = {
           p_type: string
           p_user_id: string
         }
+        Returns: string
+      }
+      enroll_in_sequence: {
+        Args: { p_contact_id: string; p_sequence_id: string; p_user_id: string }
         Returns: string
       }
       generate_team_alerts: { Args: never; Returns: undefined }
@@ -2583,6 +3076,17 @@ export type Database = {
       mark_notification_read: {
         Args: { p_notification_id: string }
         Returns: undefined
+      }
+      process_sequence_queue: {
+        Args: never
+        Returns: {
+          body: string
+          contact_email: string
+          enrollment_id: string
+          send_id: string
+          subject: string
+          user_id: string
+        }[]
       }
       refresh_all_leaderboards: { Args: never; Returns: undefined }
       update_contact_health: {
