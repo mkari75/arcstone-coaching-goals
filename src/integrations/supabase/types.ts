@@ -112,6 +112,221 @@ export type Database = {
           },
         ]
       }
+      api_keys: {
+        Row: {
+          created_at: string | null
+          expires_at: string | null
+          id: string
+          is_active: boolean | null
+          key_hash: string
+          key_prefix: string
+          last_used_at: string | null
+          name: string
+          scopes: string[]
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          key_hash: string
+          key_prefix: string
+          last_used_at?: string | null
+          name: string
+          scopes: string[]
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          key_hash?: string
+          key_prefix?: string
+          last_used_at?: string | null
+          name?: string
+          scopes?: string[]
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      calendar_events: {
+        Row: {
+          attendees: Json | null
+          contact_id: string | null
+          created_at: string | null
+          description: string | null
+          end_time: string
+          event_id: string
+          id: string
+          integration_id: string | null
+          is_all_day: boolean | null
+          is_recurring: boolean | null
+          location: string | null
+          meeting_url: string | null
+          organizer_email: string | null
+          recurrence_pattern: Json | null
+          start_time: string
+          status: string | null
+          subject: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          attendees?: Json | null
+          contact_id?: string | null
+          created_at?: string | null
+          description?: string | null
+          end_time: string
+          event_id: string
+          id?: string
+          integration_id?: string | null
+          is_all_day?: boolean | null
+          is_recurring?: boolean | null
+          location?: string | null
+          meeting_url?: string | null
+          organizer_email?: string | null
+          recurrence_pattern?: Json | null
+          start_time: string
+          status?: string | null
+          subject: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          attendees?: Json | null
+          contact_id?: string | null
+          created_at?: string | null
+          description?: string | null
+          end_time?: string
+          event_id?: string
+          id?: string
+          integration_id?: string | null
+          is_all_day?: boolean | null
+          is_recurring?: boolean | null
+          location?: string | null
+          meeting_url?: string | null
+          organizer_email?: string | null
+          recurrence_pattern?: Json | null
+          start_time?: string
+          status?: string | null
+          subject?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "calendar_events_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "contacts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "calendar_events_integration_id_fkey"
+            columns: ["integration_id"]
+            isOneToOne: false
+            referencedRelation: "calendar_integrations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      calendar_integrations: {
+        Row: {
+          access_token: string | null
+          auto_sync_enabled: boolean | null
+          created_at: string | null
+          email_address: string
+          id: string
+          is_active: boolean | null
+          last_sync_at: string | null
+          provider: string
+          refresh_token: string | null
+          sync_frequency_minutes: number | null
+          token_expires_at: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          access_token?: string | null
+          auto_sync_enabled?: boolean | null
+          created_at?: string | null
+          email_address: string
+          id?: string
+          is_active?: boolean | null
+          last_sync_at?: string | null
+          provider?: string
+          refresh_token?: string | null
+          sync_frequency_minutes?: number | null
+          token_expires_at?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          access_token?: string | null
+          auto_sync_enabled?: boolean | null
+          created_at?: string | null
+          email_address?: string
+          id?: string
+          is_active?: boolean | null
+          last_sync_at?: string | null
+          provider?: string
+          refresh_token?: string | null
+          sync_frequency_minutes?: number | null
+          token_expires_at?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      calendar_sync_log: {
+        Row: {
+          created_at: string | null
+          error_message: string | null
+          events_fetched: number | null
+          events_processed: number | null
+          id: string
+          integration_id: string
+          status: string
+          sync_completed_at: string | null
+          sync_started_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          error_message?: string | null
+          events_fetched?: number | null
+          events_processed?: number | null
+          id?: string
+          integration_id: string
+          status: string
+          sync_completed_at?: string | null
+          sync_started_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          error_message?: string | null
+          events_fetched?: number | null
+          events_processed?: number | null
+          id?: string
+          integration_id?: string
+          status?: string
+          sync_completed_at?: string | null
+          sync_started_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "calendar_sync_log_integration_id_fkey"
+            columns: ["integration_id"]
+            isOneToOne: false
+            referencedRelation: "calendar_integrations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ce_module_completions: {
         Row: {
           attempts: number | null
@@ -690,6 +905,290 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      email_activities: {
+        Row: {
+          bcc_emails: string[] | null
+          body_content: string | null
+          body_preview: string | null
+          categories: string[] | null
+          cc_emails: string[] | null
+          contact_id: string | null
+          conversation_id: string | null
+          created_at: string | null
+          direction: string
+          email_id: string
+          from_email: string
+          from_name: string | null
+          has_attachments: boolean | null
+          id: string
+          importance: string | null
+          integration_id: string | null
+          is_read: boolean | null
+          received_at: string | null
+          sent_at: string
+          subject: string | null
+          to_emails: string[] | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          bcc_emails?: string[] | null
+          body_content?: string | null
+          body_preview?: string | null
+          categories?: string[] | null
+          cc_emails?: string[] | null
+          contact_id?: string | null
+          conversation_id?: string | null
+          created_at?: string | null
+          direction: string
+          email_id: string
+          from_email: string
+          from_name?: string | null
+          has_attachments?: boolean | null
+          id?: string
+          importance?: string | null
+          integration_id?: string | null
+          is_read?: boolean | null
+          received_at?: string | null
+          sent_at: string
+          subject?: string | null
+          to_emails?: string[] | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          bcc_emails?: string[] | null
+          body_content?: string | null
+          body_preview?: string | null
+          categories?: string[] | null
+          cc_emails?: string[] | null
+          contact_id?: string | null
+          conversation_id?: string | null
+          created_at?: string | null
+          direction?: string
+          email_id?: string
+          from_email?: string
+          from_name?: string | null
+          has_attachments?: boolean | null
+          id?: string
+          importance?: string | null
+          integration_id?: string | null
+          is_read?: boolean | null
+          received_at?: string | null
+          sent_at?: string
+          subject?: string | null
+          to_emails?: string[] | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "email_activities_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "contacts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "email_activities_integration_id_fkey"
+            columns: ["integration_id"]
+            isOneToOne: false
+            referencedRelation: "email_integrations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      email_drafts: {
+        Row: {
+          bcc_emails: string[] | null
+          body: string | null
+          cc_emails: string[] | null
+          contact_id: string | null
+          created_at: string | null
+          id: string
+          outlook_draft_id: string | null
+          subject: string | null
+          template_id: string | null
+          to_emails: string[] | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          bcc_emails?: string[] | null
+          body?: string | null
+          cc_emails?: string[] | null
+          contact_id?: string | null
+          created_at?: string | null
+          id?: string
+          outlook_draft_id?: string | null
+          subject?: string | null
+          template_id?: string | null
+          to_emails?: string[] | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          bcc_emails?: string[] | null
+          body?: string | null
+          cc_emails?: string[] | null
+          contact_id?: string | null
+          created_at?: string | null
+          id?: string
+          outlook_draft_id?: string | null
+          subject?: string | null
+          template_id?: string | null
+          to_emails?: string[] | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "email_drafts_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "contacts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "email_drafts_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "email_templates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      email_integrations: {
+        Row: {
+          access_token: string | null
+          auto_sync_enabled: boolean | null
+          created_at: string | null
+          email_address: string
+          id: string
+          is_active: boolean | null
+          last_sync_at: string | null
+          provider: string
+          refresh_token: string | null
+          sync_frequency_minutes: number | null
+          token_expires_at: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          access_token?: string | null
+          auto_sync_enabled?: boolean | null
+          created_at?: string | null
+          email_address: string
+          id?: string
+          is_active?: boolean | null
+          last_sync_at?: string | null
+          provider?: string
+          refresh_token?: string | null
+          sync_frequency_minutes?: number | null
+          token_expires_at?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          access_token?: string | null
+          auto_sync_enabled?: boolean | null
+          created_at?: string | null
+          email_address?: string
+          id?: string
+          is_active?: boolean | null
+          last_sync_at?: string | null
+          provider?: string
+          refresh_token?: string | null
+          sync_frequency_minutes?: number | null
+          token_expires_at?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      email_sync_log: {
+        Row: {
+          created_at: string | null
+          error_message: string | null
+          id: string
+          integration_id: string
+          messages_fetched: number | null
+          messages_processed: number | null
+          status: string
+          sync_completed_at: string | null
+          sync_started_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          error_message?: string | null
+          id?: string
+          integration_id: string
+          messages_fetched?: number | null
+          messages_processed?: number | null
+          status: string
+          sync_completed_at?: string | null
+          sync_started_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          error_message?: string | null
+          id?: string
+          integration_id?: string
+          messages_fetched?: number | null
+          messages_processed?: number | null
+          status?: string
+          sync_completed_at?: string | null
+          sync_started_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "email_sync_log_integration_id_fkey"
+            columns: ["integration_id"]
+            isOneToOne: false
+            referencedRelation: "email_integrations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      email_templates: {
+        Row: {
+          body: string
+          category: string | null
+          created_at: string | null
+          id: string
+          is_shared: boolean | null
+          name: string
+          subject: string
+          updated_at: string | null
+          use_count: number | null
+          user_id: string
+        }
+        Insert: {
+          body: string
+          category?: string | null
+          created_at?: string | null
+          id?: string
+          is_shared?: boolean | null
+          name: string
+          subject: string
+          updated_at?: string | null
+          use_count?: number | null
+          user_id: string
+        }
+        Update: {
+          body?: string
+          category?: string | null
+          created_at?: string | null
+          id?: string
+          is_shared?: boolean | null
+          name?: string
+          subject?: string
+          updated_at?: string | null
+          use_count?: number | null
+          user_id?: string
+        }
+        Relationships: []
       }
       leaderboard_data: {
         Row: {
@@ -1751,6 +2250,51 @@ export type Database = {
         }
         Relationships: []
       }
+      sync_queue: {
+        Row: {
+          attempts: number | null
+          completed_at: string | null
+          created_at: string | null
+          error_message: string | null
+          id: string
+          job_data: Json | null
+          job_type: string
+          max_attempts: number | null
+          scheduled_at: string | null
+          started_at: string | null
+          status: string
+          user_id: string
+        }
+        Insert: {
+          attempts?: number | null
+          completed_at?: string | null
+          created_at?: string | null
+          error_message?: string | null
+          id?: string
+          job_data?: Json | null
+          job_type: string
+          max_attempts?: number | null
+          scheduled_at?: string | null
+          started_at?: string | null
+          status?: string
+          user_id: string
+        }
+        Update: {
+          attempts?: number | null
+          completed_at?: string | null
+          created_at?: string | null
+          error_message?: string | null
+          id?: string
+          job_data?: Json | null
+          job_type?: string
+          max_attempts?: number | null
+          scheduled_at?: string | null
+          started_at?: string | null
+          status?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       team_alerts: {
         Row: {
           alert_type: string
@@ -1848,6 +2392,86 @@ export type Database = {
         Update: {
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      webhook_deliveries: {
+        Row: {
+          created_at: string | null
+          delivered_at: string | null
+          event_type: string
+          id: string
+          payload: Json
+          response_body: string | null
+          response_status: number | null
+          webhook_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          delivered_at?: string | null
+          event_type: string
+          id?: string
+          payload: Json
+          response_body?: string | null
+          response_status?: number | null
+          webhook_id: string
+        }
+        Update: {
+          created_at?: string | null
+          delivered_at?: string | null
+          event_type?: string
+          id?: string
+          payload?: Json
+          response_body?: string | null
+          response_status?: number | null
+          webhook_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "webhook_deliveries_webhook_id_fkey"
+            columns: ["webhook_id"]
+            isOneToOne: false
+            referencedRelation: "webhooks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      webhooks: {
+        Row: {
+          created_at: string | null
+          events: string[]
+          id: string
+          is_active: boolean | null
+          last_triggered_at: string | null
+          name: string
+          secret: string
+          updated_at: string | null
+          url: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          events: string[]
+          id?: string
+          is_active?: boolean | null
+          last_triggered_at?: string | null
+          name: string
+          secret: string
+          updated_at?: string | null
+          url: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          events?: string[]
+          id?: string
+          is_active?: boolean | null
+          last_triggered_at?: string | null
+          name?: string
+          secret?: string
+          updated_at?: string | null
+          url?: string
           user_id?: string
         }
         Relationships: []
@@ -1951,6 +2575,10 @@ export type Database = {
           _user_id: string
         }
         Returns: boolean
+      }
+      increment_template_use_count: {
+        Args: { template_uuid: string }
+        Returns: undefined
       }
       mark_notification_read: {
         Args: { p_notification_id: string }

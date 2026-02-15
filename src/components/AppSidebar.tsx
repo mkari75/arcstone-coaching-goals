@@ -9,6 +9,7 @@ import {
   GraduationCap,
   BarChart3,
   MessageSquare,
+  Plug,
   LogOut,
 } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -38,6 +39,7 @@ const navItems = [
   { title: "Messages", icon: MessageSquare, path: "/messages" },
   { title: "Manager", icon: Shield, path: "/manager" },
   { title: "Analytics", icon: BarChart3, path: "/analytics" },
+  { title: "Integrations", icon: Plug, path: "/integrations" },
 ];
 
 export function AppSidebar() {

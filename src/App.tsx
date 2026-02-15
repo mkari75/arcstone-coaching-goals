@@ -12,6 +12,7 @@ import LeaderboardPage from "./pages/LeaderboardPage";
 import ManagerDashboard from "./pages/ManagerDashboard";
 import ProgramsLibrary from "./pages/ProgramsLibrary";
 import AnalyticsDashboard from "./pages/AnalyticsDashboard";
+import IntegrationsPage from "./pages/IntegrationsPage";
 import ProgramViewer from "./pages/ProgramViewer";
 import PolicyViewer from "./pages/PolicyViewer";
 import NotFound from "./pages/NotFound";
@@ -48,6 +49,7 @@ const App = () => (
             <Route path="messages" element={<PlaceholderPage title="CEO Messages" />} />
             <Route path="manager" element={<ManagerDashboard />} />
             <Route path="analytics" element={<AnalyticsDashboard />} />
+            <Route path="integrations" element={<IntegrationsPage />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
