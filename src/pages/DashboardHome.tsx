@@ -7,9 +7,10 @@ import { DailyPowerMoves } from '@/components/coaching/DailyPowerMoves';
 import { QuickStats } from '@/components/coaching/QuickStats';
 import { MorningKickoff } from '@/components/coaching/MorningKickoff';
 import { EveningDebrief } from '@/components/coaching/EveningDebrief';
+import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { Sun, Moon } from 'lucide-react';
-import { format } from 'date-fns';
+import { format, subDays, startOfWeek, startOfMonth } from 'date-fns';
 import { toast } from 'sonner';
 
 const DashboardHome = () => {
@@ -22,7 +23,7 @@ const DashboardHome = () => {
   const [showEveningDebrief, setShowEveningDebrief] = useState(false);
 
   // Profile data
-  const { data: profile } = useQuery({
+  const { data: profile, isLoading: profileLoading } = useQuery({
     queryKey: ['profile', userId],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -37,7 +38,7 @@ const DashboardHome = () => {
   });
 
   // Today's power moves
-  const { data: powerMoves } = useQuery({
+  const { data: powerMoves, isLoading: movesLoading } = useQuery({
     queryKey: ['power-moves', userId, today],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -52,25 +53,9 @@ const DashboardHome = () => {
     enabled: !!userId,
   });
 
-  // Today's activities count
-  const { data: todayActivities } = useQuery({
-    queryKey: ['today-activities', userId, today],
-    queryFn: async () => {
-      const { count, error } = await supabase
-        .from('activities')
-        .select('*', { count: 'exact', head: true })
-        .eq('user_id', userId!)
-        .gte('completed_at', `${today}T00:00:00`)
-        .lte('completed_at', `${today}T23:59:59`);
-      if (error) throw error;
-      return count ?? 0;
-    },
-    enabled: !!userId,
-  });
-
-  // Today's points
-  const { data: todayPoints } = useQuery({
-    queryKey: ['today-points', userId, today],
+  // Today's activities count & points
+  const { data: todayStats, isLoading: statsLoading } = useQuery({
+    queryKey: ['today-stats-dashboard', userId, today],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('activities')
@@ -79,6 +64,92 @@ const DashboardHome = () => {
         .gte('completed_at', `${today}T00:00:00`)
         .lte('completed_at', `${today}T23:59:59`);
       if (error) throw error;
+      const count = data?.length ?? 0;
+      const points = data?.reduce((sum, a) => sum + (a.points ?? 0), 0) ?? 0;
+      return { count, points };
+    },
+    enabled: !!userId,
+  });
+
+  // Weekly points
+  const weekStart = format(startOfWeek(new Date(), { weekStartsOn: 1 }), 'yyyy-MM-dd');
+  const { data: weeklyPoints } = useQuery({
+    queryKey: ['weekly-points', userId, weekStart],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('activities')
+        .select('points')
+        .eq('user_id', userId!)
+        .gte('completed_at', `${weekStart}T00:00:00`);
+      if (error) throw error;
+      return data?.reduce((sum, a) => sum + (a.points ?? 0), 0) ?? 0;
+    },
+    enabled: !!userId,
+  });
+
+  // Contacts touched this week
+  const { data: contactsTouched } = useQuery({
+    queryKey: ['contacts-touched', userId, weekStart],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('activities')
+        .select('contact_id')
+        .eq('user_id', userId!)
+        .gte('completed_at', `${weekStart}T00:00:00`)
+        .not('contact_id', 'is', null);
+      if (error) throw error;
+      const unique = new Set(data?.map(a => a.contact_id));
+      return unique.size;
+    },
+    enabled: !!userId,
+  });
+
+  // Monthly volume & closed loans
+  const monthStart = format(startOfMonth(new Date()), 'yyyy-MM-dd');
+  const { data: monthlyMetrics } = useQuery({
+    queryKey: ['monthly-metrics', userId, monthStart],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('leaderboard_data')
+        .select('volume_closed, loans_closed')
+        .eq('user_id', userId!)
+        .eq('period_type', 'monthly')
+        .gte('period_start', monthStart)
+        .maybeSingle();
+      if (error) return { volume: 0, loans: 0 };
+      return { volume: data?.volume_closed ?? 0, loans: data?.loans_closed ?? 0 };
+    },
+    enabled: !!userId,
+  });
+
+  // Yesterday's completion
+  const yesterday = format(subDays(new Date(), 1), 'yyyy-MM-dd');
+  const { data: yesterdayCompletion } = useQuery({
+    queryKey: ['yesterday-completion', userId, yesterday],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('daily_power_moves')
+        .select('completion_percentage')
+        .eq('user_id', userId!)
+        .eq('assigned_date', yesterday)
+        .maybeSingle();
+      if (error) return 0;
+      return data?.completion_percentage ?? 0;
+    },
+    enabled: !!userId,
+  });
+
+  // Yesterday's points for trend
+  const { data: yesterdayPoints } = useQuery({
+    queryKey: ['yesterday-points', userId, yesterday],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('activities')
+        .select('points')
+        .eq('user_id', userId!)
+        .gte('completed_at', `${yesterday}T00:00:00`)
+        .lte('completed_at', `${yesterday}T23:59:59`);
+      if (error) return 0;
       return data?.reduce((sum, a) => sum + (a.points ?? 0), 0) ?? 0;
     },
     enabled: !!userId,
@@ -127,6 +198,12 @@ const DashboardHome = () => {
 
   const userName = profile?.full_name?.split(' ')[0] || session?.user?.email?.split('@')[0] || 'there';
 
+  const pointsChange = yesterdayPoints
+    ? Math.round(((todayStats?.points ?? 0) - yesterdayPoints) / Math.max(yesterdayPoints, 1) * 100)
+    : undefined;
+
+  const isLoading = profileLoading || movesLoading || statsLoading;
+
   return (
     <div className="animate-fade-in space-y-6">
       <div className="flex items-center justify-between">
@@ -144,29 +221,45 @@ const DashboardHome = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <MomentumScore
-          score={profile?.momentum_score ?? 0}
-          currentStreak={profile?.current_streak ?? 0}
-          longestStreak={profile?.longest_streak ?? 0}
-          dailyCompletionAvg={Number(profile?.daily_completion_avg ?? 0)}
-        />
-        <DailyPowerMoves
-          powerMoves={powerMoves ?? null}
-          onCompleteMove={(num) => completeMutation.mutate(num)}
-          isLoading={completeMutation.isPending}
-          className="lg:col-span-2"
-        />
-      </div>
+      {isLoading ? (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <Skeleton className="h-64" />
+          <Skeleton className="h-64 lg:col-span-2" />
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <MomentumScore
+            score={profile?.momentum_score ?? 0}
+            currentStreak={profile?.current_streak ?? 0}
+            longestStreak={profile?.longest_streak ?? 0}
+            dailyCompletionAvg={Number(profile?.daily_completion_avg ?? 0)}
+          />
+          <DailyPowerMoves
+            powerMoves={powerMoves ?? null}
+            onCompleteMove={(num) => completeMutation.mutate(num)}
+            isLoading={completeMutation.isPending}
+            className="lg:col-span-2"
+          />
+        </div>
+      )}
 
-      <QuickStats
-        todayPoints={todayPoints ?? 0}
-        weeklyPoints={0}
-        contactsTouched={0}
-        activitiesLogged={todayActivities ?? 0}
-        monthlyVolume={0}
-        closedLoans={0}
-      />
+      {statsLoading ? (
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <Skeleton key={i} className="h-24" />
+          ))}
+        </div>
+      ) : (
+        <QuickStats
+          todayPoints={todayStats?.points ?? 0}
+          weeklyPoints={weeklyPoints ?? 0}
+          contactsTouched={contactsTouched ?? 0}
+          activitiesLogged={todayStats?.count ?? 0}
+          monthlyVolume={monthlyMetrics?.volume ?? 0}
+          closedLoans={monthlyMetrics?.loans ?? 0}
+          pointsChange={pointsChange}
+        />
+      )}
 
       <MorningKickoff
         isOpen={showMorningKickoff}
@@ -174,15 +267,15 @@ const DashboardHome = () => {
         userName={userName}
         powerMoves={powerMoves ?? null}
         currentStreak={profile?.current_streak ?? 0}
-        yesterdayCompletion={0}
+        yesterdayCompletion={yesterdayCompletion ?? 0}
       />
 
       <EveningDebrief
         isOpen={showEveningDebrief}
         onClose={() => setShowEveningDebrief(false)}
         powerMoves={powerMoves ?? null}
-        todayPoints={todayPoints ?? 0}
-        activitiesLogged={todayActivities ?? 0}
+        todayPoints={todayStats?.points ?? 0}
+        activitiesLogged={todayStats?.count ?? 0}
       />
     </div>
   );
