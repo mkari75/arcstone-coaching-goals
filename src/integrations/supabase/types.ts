@@ -1641,6 +1641,116 @@ export type Database = {
           },
         ]
       }
+      report_executions: {
+        Row: {
+          completed_at: string | null
+          error_message: string | null
+          executed_at: string | null
+          execution_time_ms: number | null
+          file_url: string | null
+          id: string
+          report_id: string | null
+          result_data: Json | null
+          row_count: number | null
+          status: string | null
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          error_message?: string | null
+          executed_at?: string | null
+          execution_time_ms?: number | null
+          file_url?: string | null
+          id?: string
+          report_id?: string | null
+          result_data?: Json | null
+          row_count?: number | null
+          status?: string | null
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          error_message?: string | null
+          executed_at?: string | null
+          execution_time_ms?: number | null
+          file_url?: string | null
+          id?: string
+          report_id?: string | null
+          result_data?: Json | null
+          row_count?: number | null
+          status?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "report_executions_report_id_fkey"
+            columns: ["report_id"]
+            isOneToOne: false
+            referencedRelation: "saved_reports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      saved_reports: {
+        Row: {
+          columns: Json | null
+          created_at: string | null
+          date_range: Json | null
+          filters: Json | null
+          id: string
+          is_scheduled: boolean | null
+          is_shared: boolean | null
+          last_run_at: string | null
+          next_run_at: string | null
+          report_name: string
+          report_type: string
+          schedule_day: number | null
+          schedule_frequency: string | null
+          schedule_time: string | null
+          shared_with: string[] | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          columns?: Json | null
+          created_at?: string | null
+          date_range?: Json | null
+          filters?: Json | null
+          id?: string
+          is_scheduled?: boolean | null
+          is_shared?: boolean | null
+          last_run_at?: string | null
+          next_run_at?: string | null
+          report_name: string
+          report_type?: string
+          schedule_day?: number | null
+          schedule_frequency?: string | null
+          schedule_time?: string | null
+          shared_with?: string[] | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          columns?: Json | null
+          created_at?: string | null
+          date_range?: Json | null
+          filters?: Json | null
+          id?: string
+          is_scheduled?: boolean | null
+          is_shared?: boolean | null
+          last_run_at?: string | null
+          next_run_at?: string | null
+          report_name?: string
+          report_type?: string
+          schedule_day?: number | null
+          schedule_frequency?: string | null
+          schedule_time?: string | null
+          shared_with?: string[] | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       team_alerts: {
         Row: {
           alert_type: string
@@ -1776,6 +1886,33 @@ export type Database = {
         Returns: string
       }
       generate_team_alerts: { Args: never; Returns: undefined }
+      get_activity_trends: {
+        Args: {
+          p_end_date?: string
+          p_grouping?: string
+          p_start_date?: string
+          p_user_id?: string
+        }
+        Returns: {
+          calls_count: number
+          emails_count: number
+          meetings_count: number
+          period: string
+          total_activities: number
+          total_points: number
+          unique_contacts: number
+        }[]
+      }
+      get_compliance_breakdown: {
+        Args: { p_user_id?: string }
+        Returns: {
+          category: string
+          completed: number
+          completion_rate: number
+          pending: number
+          total: number
+        }[]
+      }
       get_pending_acknowledgments: {
         Args: { p_user_id: string }
         Returns: {
@@ -1793,6 +1930,18 @@ export type Database = {
         Returns: {
           end_date: string
           start_date: string
+        }[]
+      }
+      get_team_performance_comparison: {
+        Args: { p_end_date?: string; p_start_date?: string }
+        Returns: {
+          current_streak: number
+          full_name: string
+          momentum_score: number
+          rank: number
+          total_activities: number
+          total_points: number
+          user_id: string
         }[]
       }
       get_unread_count: { Args: { p_user_id: string }; Returns: number }
