@@ -7,6 +7,7 @@ import {
   BookOpen,
   Shield,
   GraduationCap,
+  BarChart3,
   MessageSquare,
   LogOut,
 } from "lucide-react";
@@ -36,6 +37,7 @@ const navItems = [
   { title: "Education", icon: GraduationCap, path: "/education" },
   { title: "Messages", icon: MessageSquare, path: "/messages" },
   { title: "Manager", icon: Shield, path: "/manager" },
+  { title: "Analytics", icon: BarChart3, path: "/analytics" },
 ];
 
 export function AppSidebar() {
