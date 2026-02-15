@@ -1,73 +1,81 @@
-# Welcome to your Lovable project
+# LoanOS — Loan Officer Coaching & Performance Platform
 
-## Project info
+A gamified coaching platform for mortgage loan officers, built with React, TypeScript, and Lovable Cloud.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+## Features
 
-## How can I edit this code?
+- **Dashboard** — Momentum score, daily power moves, quick stats with real-time metrics
+- **Activity Logging** — Log calls, emails, meetings with voice note transcription (OpenAI Whisper)
+- **Contact Management** — CRM with health scoring and relationship tracking
+- **Leaderboard** — Ranked performance by points, volume, and loans closed
+- **Programs & Policies** — Library with quiz-based acknowledgments
+- **Manager Dashboard** — Team overview, coaching notes, alerts & escalations
+- **Gamification** — Achievements, celebration feed, streaks
 
-There are several ways of editing your application.
+## Tech Stack
 
-**Use Lovable**
+- **Frontend**: React 18, TypeScript, Vite, Tailwind CSS, shadcn/ui
+- **Backend**: Lovable Cloud (Supabase) — Database, Auth, Edge Functions, Storage
+- **AI**: OpenAI Whisper (transcription), Lovable AI Gateway (contact extraction)
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+## Getting Started
 
-Changes made via Lovable will be committed automatically to this repo.
+### 1. Clone & Install
 
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
+```bash
 git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
 cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+npm install
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+### 2. Environment
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+Environment variables are auto-managed by Lovable Cloud. No `.env` setup is required when using the Lovable editor.
 
-**Use GitHub Codespaces**
+### 3. Backend Secrets
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+The following secrets are configured in Lovable Cloud (Settings → Secrets):
 
-## What technologies are used for this project?
+| Secret | Purpose |
+|--------|---------|
+| `OPENAI_API_KEY` | Voice note transcription via Whisper API |
+| `LOVABLE_API_KEY` | AI Gateway for contact extraction (auto-provisioned) |
 
-This project is built with:
+### 4. Storage Buckets
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+- `voice-notes` — Audio recordings from voice notes
+- `program-documents` — Program/policy supporting documents
 
-## How can I deploy this project?
+### 5. Database
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+All tables, RLS policies, functions, and triggers are managed via Lovable Cloud migrations. Key tables:
 
-## Can I connect a custom domain to my Lovable project?
+`profiles`, `activities`, `contacts`, `daily_power_moves`, `achievements`, `user_achievements`, `leaderboard_data`, `programs`, `policies`, `notifications`, `coaching_notes`, `team_alerts`, `celebration_feed`, `licenses`, `ceo_messages`, `continuing_education_modules`
 
-Yes, you can!
+### 6. Key Database Functions
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+- `calculate_momentum_score(user_id, days)` — Computes momentum score
+- `update_contact_health(contact_id)` — Recalculates contact health
+- `generate_team_alerts()` — Creates alerts for inactive/low-performing LOs
+- `calculate_leaderboard(period_type, start, end)` — Ranks users by performance
+- `refresh_all_leaderboards()` — Refreshes daily/weekly/monthly rankings
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+## Project Structure
+
+```
+src/
+├── components/       # UI components (coaching, gamification, manager, notifications)
+├── hooks/            # React hooks (useAuth, useActivities, useContactsCRUD, etc.)
+├── pages/            # Route pages (Dashboard, ActivityLog, ContactsPage, etc.)
+├── services/         # whisperService (transcription + contact extraction)
+├── integrations/     # Auto-generated Supabase client & types
+└── lib/              # Utilities
+supabase/
+├── functions/        # Edge functions (voice-transcribe, seed-demo-data)
+└── migrations/       # Database schema migrations
+```
+
+## Deployment
+
+Open [Lovable](https://lovable.dev) → Share → Publish.
