@@ -33,6 +33,7 @@ const navItems = [
   { title: "Activities", icon: Activity, path: "/activities" },
   { title: "Contacts", icon: Users, path: "/contacts" },
   { title: "Leaderboard", icon: Trophy, path: "/leaderboard" },
+  { title: "Goals", icon: Target, path: "/goals" },
   { title: "Programs", icon: BookOpen, path: "/programs" },
   { title: "Policies", icon: Shield, path: "/policies-page" },
   { title: "Education", icon: GraduationCap, path: "/education" },

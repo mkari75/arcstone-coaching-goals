@@ -151,6 +151,66 @@ export type Database = {
         }
         Relationships: []
       }
+      actual_production: {
+        Row: {
+          borrower_full_name: string
+          close_date: string
+          created_at: string | null
+          id: string
+          lien_position: string | null
+          lo_bps: number
+          lo_compensation: number
+          loan_amount: number
+          loan_number: string
+          loan_status: string | null
+          loan_type: Database["public"]["Enums"]["loan_type_enum"] | null
+          occupancy: Database["public"]["Enums"]["occupancy_enum"] | null
+          quarter: number | null
+          transaction_type: string
+          updated_at: string | null
+          user_id: string
+          year: number
+        }
+        Insert: {
+          borrower_full_name: string
+          close_date: string
+          created_at?: string | null
+          id?: string
+          lien_position?: string | null
+          lo_bps: number
+          lo_compensation: number
+          loan_amount: number
+          loan_number: string
+          loan_status?: string | null
+          loan_type?: Database["public"]["Enums"]["loan_type_enum"] | null
+          occupancy?: Database["public"]["Enums"]["occupancy_enum"] | null
+          quarter?: number | null
+          transaction_type: string
+          updated_at?: string | null
+          user_id: string
+          year: number
+        }
+        Update: {
+          borrower_full_name?: string
+          close_date?: string
+          created_at?: string | null
+          id?: string
+          lien_position?: string | null
+          lo_bps?: number
+          lo_compensation?: number
+          loan_amount?: number
+          loan_number?: string
+          loan_status?: string | null
+          loan_type?: Database["public"]["Enums"]["loan_type_enum"] | null
+          occupancy?: Database["public"]["Enums"]["occupancy_enum"] | null
+          quarter?: number | null
+          transaction_type?: string
+          updated_at?: string | null
+          user_id?: string
+          year?: number
+        }
+        Relationships: []
+      }
       ai_analysis_cache: {
         Row: {
           analysis_type: string
@@ -331,6 +391,108 @@ export type Database = {
           last_used_at?: string | null
           name?: string
           scopes?: string[]
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      audit_entries: {
+        Row: {
+          action: string
+          approved_by: string | null
+          created_at: string | null
+          date: string
+          details: string
+          field_changes: Json | null
+          id: string
+          lo_justification: string | null
+          loan_officer: string
+          manager_notes: string | null
+        }
+        Insert: {
+          action: string
+          approved_by?: string | null
+          created_at?: string | null
+          date?: string
+          details: string
+          field_changes?: Json | null
+          id?: string
+          lo_justification?: string | null
+          loan_officer: string
+          manager_notes?: string | null
+        }
+        Update: {
+          action?: string
+          approved_by?: string | null
+          created_at?: string | null
+          date?: string
+          details?: string
+          field_changes?: Json | null
+          id?: string
+          lo_justification?: string | null
+          loan_officer?: string
+          manager_notes?: string | null
+        }
+        Relationships: []
+      }
+      business_plans: {
+        Row: {
+          avg_loan_amount: number
+          conversion_rate_purchase: number | null
+          conversion_rate_refinance: number | null
+          created_at: string | null
+          id: string
+          income_goal: number
+          is_original: boolean | null
+          leads_from_partners_percentage: number | null
+          leads_per_partner_per_month: number | null
+          plan_year: number
+          pull_through_purchase: number
+          pull_through_refinance: number
+          purchase_bps: number
+          purchase_percentage: number
+          refinance_bps: number
+          status: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          avg_loan_amount: number
+          conversion_rate_purchase?: number | null
+          conversion_rate_refinance?: number | null
+          created_at?: string | null
+          id?: string
+          income_goal: number
+          is_original?: boolean | null
+          leads_from_partners_percentage?: number | null
+          leads_per_partner_per_month?: number | null
+          plan_year: number
+          pull_through_purchase?: number
+          pull_through_refinance?: number
+          purchase_bps: number
+          purchase_percentage: number
+          refinance_bps: number
+          status?: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          avg_loan_amount?: number
+          conversion_rate_purchase?: number | null
+          conversion_rate_refinance?: number | null
+          created_at?: string | null
+          id?: string
+          income_goal?: number
+          is_original?: boolean | null
+          leads_from_partners_percentage?: number | null
+          leads_per_partner_per_month?: number | null
+          plan_year?: number
+          pull_through_purchase?: number
+          pull_through_refinance?: number
+          purchase_bps?: number
+          purchase_percentage?: number
+          refinance_bps?: number
+          status?: string
           updated_at?: string | null
           user_id?: string
         }
@@ -757,6 +919,42 @@ export type Database = {
         }
         Relationships: []
       }
+      chart_configs: {
+        Row: {
+          categories: Json
+          created_at: string | null
+          created_by: string | null
+          db_column: string
+          id: string
+          is_active: boolean | null
+          sort_order: number | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          categories: Json
+          created_at?: string | null
+          created_by?: string | null
+          db_column: string
+          id?: string
+          is_active?: boolean | null
+          sort_order?: number | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          categories?: Json
+          created_at?: string | null
+          created_by?: string | null
+          db_column?: string
+          id?: string
+          is_active?: boolean | null
+          sort_order?: number | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       coaching_notes: {
         Row: {
           action_items: Json | null
@@ -1105,6 +1303,33 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      db_column_options: {
+        Row: {
+          column_name: string
+          created_at: string | null
+          created_by: string | null
+          display_label: string
+          id: string
+          sort_order: number | null
+        }
+        Insert: {
+          column_name: string
+          created_at?: string | null
+          created_by?: string | null
+          display_label: string
+          id?: string
+          sort_order?: number | null
+        }
+        Update: {
+          column_name?: string
+          created_at?: string | null
+          created_by?: string | null
+          display_label?: string
+          id?: string
+          sort_order?: number | null
+        }
+        Relationships: []
       }
       email_activities: {
         Row: {
@@ -1888,6 +2113,71 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      plan_revisions: {
+        Row: {
+          created_at: string | null
+          current_value: number
+          effective_date: string
+          field_to_change: string
+          id: string
+          lo_justification: string
+          manager_notes: string | null
+          original_plan_id: string
+          requested_at: string | null
+          requested_by: string
+          requested_by_name: string
+          requested_value: number
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          current_value: number
+          effective_date: string
+          field_to_change: string
+          id?: string
+          lo_justification: string
+          manager_notes?: string | null
+          original_plan_id: string
+          requested_at?: string | null
+          requested_by: string
+          requested_by_name: string
+          requested_value: number
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          current_value?: number
+          effective_date?: string
+          field_to_change?: string
+          id?: string
+          lo_justification?: string
+          manager_notes?: string | null
+          original_plan_id?: string
+          requested_at?: string | null
+          requested_by?: string
+          requested_by_name?: string
+          requested_value?: number
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "plan_revisions_original_plan_id_fkey"
+            columns: ["original_plan_id"]
+            isOneToOne: false
+            referencedRelation: "business_plans"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       policies: {
         Row: {
@@ -2982,6 +3272,21 @@ export type Database = {
         Args: { p_days?: number; p_user_id: string }
         Returns: number
       }
+      calculate_performance_metrics: {
+        Args: { p_user_id: string; p_year?: number }
+        Returns: {
+          income_goal: number
+          profit_achievement: number
+          purchase_mix: number
+          units_achievement: number
+          units_goal: number
+          volume_achievement: number
+          volume_goal: number
+          ytd_profit: number
+          ytd_units: number
+          ytd_volume: number
+        }[]
+      }
       check_license_expiry: { Args: never; Returns: undefined }
       create_notification: {
         Args: {
@@ -3096,6 +3401,15 @@ export type Database = {
     }
     Enums: {
       app_role: "loan_officer" | "manager" | "super_admin"
+      loan_type_enum:
+        | "Conventional"
+        | "FHA"
+        | "VA"
+        | "USDA"
+        | "Jumbo"
+        | "Non-QM"
+        | "Other"
+      occupancy_enum: "Primary" | "Second Home" | "Investment"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -3224,6 +3538,16 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["loan_officer", "manager", "super_admin"],
+      loan_type_enum: [
+        "Conventional",
+        "FHA",
+        "VA",
+        "USDA",
+        "Jumbo",
+        "Non-QM",
+        "Other",
+      ],
+      occupancy_enum: ["Primary", "Second Home", "Investment"],
     },
   },
 } as const
