@@ -39,6 +39,7 @@ const navItems = [
   { title: "Education", icon: GraduationCap, path: "/education" },
   { title: "Messages", icon: MessageSquare, path: "/messages" },
   { title: "Manager", icon: Shield, path: "/manager" },
+  { title: "Manager Goals", icon: Target, path: "/manager-goals" },
   { title: "Analytics", icon: BarChart3, path: "/analytics" },
   { title: "Integrations", icon: Plug, path: "/integrations" },
 ];

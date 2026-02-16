@@ -329,3 +329,100 @@ export function useChartConfigs() {
     },
   });
 }
+
+// ========== MANAGER: ALL BUSINESS PLANS ==========
+export function useAllBusinessPlans(year?: number) {
+  const targetYear = year || new Date().getFullYear();
+
+  return useQuery({
+    queryKey: ['all-business-plans', targetYear],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('business_plans')
+        .select('*')
+        .eq('plan_year', targetYear)
+        .order('created_at', { ascending: false });
+      if (error) throw error;
+      return data.map(mapBusinessPlan);
+    },
+  });
+}
+
+// ========== MANAGER: PENDING REVISIONS ==========
+export function usePendingRevisions() {
+  return useQuery({
+    queryKey: ['pending-revisions'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('plan_revisions')
+        .select('*')
+        .order('requested_at', { ascending: false });
+      if (error) throw error;
+      return data.map((r: any) => mapPlanRevision(r));
+    },
+  });
+}
+
+// ========== MANAGER: APPROVE/REJECT REVISION ==========
+export function useApproveRevision() {
+  const queryClient = useQueryClient();
+  const { session } = useAuth();
+
+  return useMutation({
+    mutationFn: async ({ revisionId, decision, managerNotes }: {
+      revisionId: string;
+      decision: 'approved' | 'rejected';
+      managerNotes: string;
+    }) => {
+      const { data, error } = await supabase
+        .from('plan_revisions')
+        .update({
+          status: decision,
+          reviewed_by: session!.user.id,
+          reviewed_at: new Date().toISOString(),
+          manager_notes: managerNotes,
+        })
+        .eq('id', revisionId)
+        .select()
+        .single();
+      if (error) throw error;
+
+      // If approved, update the business plan field
+      if (decision === 'approved') {
+        const revision = mapPlanRevision(data as any);
+        const fieldMap: Record<string, string> = {
+          incomeGoal: 'income_goal',
+          purchaseBps: 'purchase_bps',
+          refinanceBps: 'refinance_bps',
+          purchasePercentage: 'purchase_percentage',
+          avgLoanAmount: 'avg_loan_amount',
+          pullThroughPurchase: 'pull_through_purchase',
+          pullThroughRefinance: 'pull_through_refinance',
+          conversionRatePurchase: 'conversion_rate_purchase',
+          conversionRateRefinance: 'conversion_rate_refinance',
+          leadsFromPartnersPercentage: 'leads_from_partners_percentage',
+          leadsPerPartnerPerMonth: 'leads_per_partner_per_month',
+        };
+        const dbField = fieldMap[revision.fieldToChange];
+        if (dbField) {
+          const { error: updateError } = await supabase
+            .from('business_plans')
+            .update({ [dbField]: revision.requestedValue })
+            .eq('id', revision.originalPlanId);
+          if (updateError) throw updateError;
+        }
+      }
+
+      return mapPlanRevision(data as any);
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['pending-revisions'] });
+      queryClient.invalidateQueries({ queryKey: ['plan-revisions'] });
+      queryClient.invalidateQueries({ queryKey: ['business-plans'] });
+      queryClient.invalidateQueries({ queryKey: ['all-business-plans'] });
+      queryClient.invalidateQueries({ queryKey: ['active-plan'] });
+      toast.success(`Revision ${variables.decision} successfully`);
+    },
+    onError: (error: Error) => toast.error(error.message),
+  });
+}
