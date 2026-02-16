@@ -20,6 +20,7 @@ const AnalyticsDashboard = lazy(() => import("./pages/AnalyticsDashboard"));
 const IntegrationsPage = lazy(() => import("./pages/IntegrationsPage"));
 const ProgramViewer = lazy(() => import("./pages/ProgramViewer"));
 const PolicyViewer = lazy(() => import("./pages/PolicyViewer"));
+const GoalsPage = lazy(() => import("./pages/GoalsPage"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -70,6 +71,7 @@ const App = () => (
             <Route path="education" element={<PlaceholderPage title="Continuing Education" />} />
             <Route path="messages" element={<PlaceholderPage title="CEO Messages" />} />
             <Route path="manager" element={<Suspense fallback={<LoadingFallback />}><ManagerDashboard /></Suspense>} />
+            <Route path="goals" element={<Suspense fallback={<LoadingFallback />}><GoalsPage /></Suspense>} />
             <Route path="analytics" element={<Suspense fallback={<LoadingFallback />}><AnalyticsDashboard /></Suspense>} />
             <Route path="integrations" element={<Suspense fallback={<LoadingFallback />}><IntegrationsPage /></Suspense>} />
           </Route>
