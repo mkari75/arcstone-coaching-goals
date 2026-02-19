@@ -12,7 +12,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Search, Plus, Phone, Mail, Building2, User, Activity, X } from 'lucide-react';
 import { format } from 'date-fns';
 
-const CONTACT_TYPES = ['prospect', 'client', 'referral_partner', 'realtor', 'builder', 'financial_planner', 'other'];
+const CONTACT_TYPES = ['prospect', 'client', 'referral_partner', 'realtor', 'builder', 'financial_planner', 'listing_agent', 'buyers_agent', 'other'];
 
 function healthBadge(score: number | null) {
   if (score == null) return <Badge variant="secondary">N/A</Badge>;
